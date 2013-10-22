@@ -1,3 +1,4 @@
+
 require 'sinatra/activerecord/rake'
 
 begin
@@ -27,3 +28,10 @@ task "db:drop" do
   %x(dropdb ninjadb)
 end
 
+task :environment do
+  require './app'
+  require 'sinatra/activerecord'
+end
+
+Rake::Task["db:migrate"].enhance [:environment]
+Rake::Task["db:rollback"].enhance [:environment]
