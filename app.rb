@@ -19,6 +19,10 @@ enable :sessions
 
 set :database, ENV['DATABASE_URL']
 
+get '/create_survey' do
+	erb :create_survey
+end
+
 get '/' do
   erb :index
 end
@@ -35,9 +39,6 @@ post '/signup' do
 	redirect '/create_survey'
 end
 
-get '/create_survey' do
-	erb :create_survey
-end
 
 
 
