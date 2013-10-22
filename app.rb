@@ -19,6 +19,31 @@ enable :sessions
 
 set :database, ENV['DATABASE_URL']
 
-get '/' do
-  "Hello Ninjas!"
+get '/create_survey' do
+	erb :create_survey
 end
+
+get '/' do
+  erb :index
+end
+
+post '/' do
+	redirect '/create_survey'
+end
+
+get '/signup' do
+	erb :signup
+end
+
+post '/signup' do
+	redirect '/create_survey'
+end
+
+
+
+
+
+
+
+
+
