@@ -12,7 +12,7 @@ require './models/vote'
 begin
   require 'dotenv'
   Dotenv.load
-  rescue LoadError
+rescue LoadError
 end
 
 enable :sessions

@@ -1,4 +1,4 @@
-require 'sinatra/activerecord'
+
 require 'sinatra/activerecord/rake'
 
 begin
@@ -30,6 +30,7 @@ end
 
 task :environment do
   require './app'
+  require 'sinatra/activerecord'
 end
 
 Rake::Task["db:migrate"].enhance [:environment]
