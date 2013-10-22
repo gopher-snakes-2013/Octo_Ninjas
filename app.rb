@@ -23,17 +23,22 @@ get '/' do
   erb :index
 end
 
+post '/' do
+	redirect '/create_survey'
+end
+
 get '/signup' do
 	erb :signup
 end
 
 post '/signup' do
+	redirect '/create_survey'
+end
+
+get '/create_survey' do
 	erb :create_survey
 end
 
-post 'signin' do
-	erb :create_survey
-end
 
 
 
