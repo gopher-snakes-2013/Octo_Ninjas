@@ -4,6 +4,7 @@ class CreateMoviesTable < ActiveRecord::Migration
   		t.string :title
 
   		t.timestamps
+    end
   end
 
   def down

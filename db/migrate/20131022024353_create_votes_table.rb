@@ -1,10 +1,11 @@
 class CreateVotesTable < ActiveRecord::Migration
   def up
   	create_table :votes do |t|
-  		t.belongs_to :survey_movies
+  		t.belongs_to :survey_movie
   		t.string :name
 
   		t.timestamps
+    end
   end
 
   def down

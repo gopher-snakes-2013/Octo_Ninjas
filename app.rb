@@ -3,9 +3,21 @@ require 'sinatra/activerecord'
 require 'bcrypt'
 require 'securerandom'
 
+require './models/movie'
+require './models/survey'
+require './models/survey_movie'
+require './models/user'
+require './models/vote'
+
+begin
+  require 'dotenv'
+  Dotenv.load
+  rescue LoadError
+end
+
 enable :sessions
 
-ActiveRecord::Base.establish_connection(:adapter => 'postgresql')
+set :database, ENV['DATABASE_URL']
 
 get '/' do
   "Hello Ninjas!"
