@@ -5,6 +5,7 @@ gem 'sinatra'
 gem 'sinatra-activerecord'
 gem 'bcrypt-ruby'
 gem 'pg'
+gem 'rottentomatoes'
 
 group :production do
 
