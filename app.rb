@@ -12,7 +12,7 @@ require './models/vote'
 
 include RottenTomatoes
 
-Rotten.api_key = 'z9rcfwsnkafcdrwpxhqsaqqy'
+
 
 begin
   require 'dotenv'
@@ -22,7 +22,8 @@ end
 
 enable :sessions
 
-set :database, ENV['DATABASE_URL'] || "postgres://localhost/ninjadb"
+set :database, ENV['DATABASE_URL']
+set :rotten_api_key, ENV['ROTTEN_API_KEY']
 
 def current_user
   @current_user ||= logged_in? && User.find(session[:user_id])
