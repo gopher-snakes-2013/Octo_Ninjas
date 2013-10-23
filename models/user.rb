@@ -13,9 +13,9 @@ class User < ActiveRecord::Base
     self.password_hash = @password
   end
 
-  def self.authenticate(username, check_password)
-    user = User.find_by username: username
-    if user and user.password == check_password
+  def self.authenticate(params)
+    user = User.find_by username: params[:username]
+    if user and user.password == params[:password]
       return user
     else
       return nil
