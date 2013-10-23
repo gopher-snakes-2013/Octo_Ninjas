@@ -85,7 +85,7 @@ get '/create_survey' do
 end
 
 post '/create_survey' do
-
+  @user = current_user
 	my_title = params[:movie_title]
 	@my_movie_list = []
 	@my_movie = RottenMovie.find(:title => my_title, :limit => 1)
