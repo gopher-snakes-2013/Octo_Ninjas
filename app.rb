@@ -17,30 +17,75 @@ end
 
 enable :sessions
 
-set :database, ENV['DATABASE_URL']
+set :database, ENV['DATABASE_URL'] || "postgres://localhost/ninjadb"
 
-get '/create_survey' do
-	erb :create_survey
+def current_user
+  @current_user ||= logged_in? && User.find(session[:user_id])
+end
+
+def logged_in?
+  session[:user_id]
+end
+
+def enforce_login
+  redirect to '/' if !logged_in?
+end
+
+def check_existing_user(username)
+  if user = User.find_by_username(username)
+    return user
+  else
+    return false
+  end
+
 end
 
 get '/' do
+  @user = current_user if logged_in?
   erb :index
 end
 
-post '/' do
-	redirect '/create_survey'
+post '/signin' do
+  @user = User.authenticate(params[:username], params[:password])
+  if !@user.nil?
+    session[:user_id] = @user.id
+    redirect '/create_survey'
+  else
+    @error = "Wrong username or password"
+    erb :index
+  end
 end
 
-get '/signup' do
-	erb :signup
+get '/register' do
+	erb :register
 end
 
-post '/signup' do
-	redirect '/create_survey'
+post '/register' do
+  if !check_existing_user(params[:username])
+    @user = User.create( {username: params[:username], email: params[:email], password: params[:password]} )
+    session[:user_id] = @user.id
+  	redirect '/create_survey'
+  else
+    @error = "That username already exists"
+    erb :index
+  end
 end
 
+get '/create_survey' do
+  enforce_login
+  @user = current_user
+  erb :create_survey
+end
+
+post '/create_survey' do
 
 
+end
+
+post '/logout' do
+  session.clear
+  redirect '/'
+end
 
 
 
