@@ -1,4 +1,4 @@
-<p>Logged in as: <%= @user.username %></p>
+<p>Logged in as: <%= current_user.username %></p>
 
 <h2>Select movies for your survey</h2>
 <p>Enter movies to be included in your survey.</p>
@@ -10,7 +10,7 @@
 
 	<hr>
 
-	<% @my_movie_list.each do |movie| %>
+	<% my_movie_list.each do |movie| %>
 	<%= movie.title %>
 	<img src=<%= movie.pic %>>
 	<% end %>
