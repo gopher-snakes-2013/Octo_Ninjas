@@ -13,6 +13,8 @@ group :production do
 end
 
 group :development do
+  gem 'dotenv'
+  gem 'debugger'
   gem 'shotgun'
   gem 'capybara'
   gem 'rspec'
