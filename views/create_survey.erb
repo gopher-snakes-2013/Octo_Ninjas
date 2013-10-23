@@ -1,16 +1,19 @@
-<h1>Select movies for your survey</h1>
+<p>Logged in as: <%= @user.username %></p>
+
+<h2>Select movies for your survey</h2>
 <p>Enter movies to be included in your survey.</p>
 
-	<form name="movie_title" action='/create_survey' method="POST">
+	<form name="form-create-survey" action='/create_survey' method="POST">
 		Movie Title: <input type="text" name ="movie_title">
 		<input type="submit" value ="submit">
 	</form>
-<hr>
 
+	<hr>
 
 	<% @my_movie_list.each do |movie| %>
 	<%= movie.title %>
 	<img src=<%= movie.pic %>>
 	<% end %>
 
-
+<br />
+<a href="../">Go Home</a>

@@ -1,0 +1,21 @@
+<% if logged_in? %>
+<p class="error">You are already logged in as <%= User.find(session[:user_id]).username %></p>
+<form name="logout-button"id="form-logout" action="/logout" method="post">
+  <input type="submit" value="logout?" />
+</form>
+<br />
+<% else %>
+
+<h2 class="register-header">Sign Up</h2>
+
+	<form name="register" action='/register' method="POST">
+		<input type="text" name ="username" placeholder="Username" /><br />
+		<input type="text" name ="email" placeholder="email" /><br />
+		<input type="password" name ="password" placeholder="password" /><br />
+		<input type="submit" value="Register">
+	</form>
+<br />
+
+<% end %>
+
+<a href="../">Go Home</a>
