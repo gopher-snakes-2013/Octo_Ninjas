@@ -12,7 +12,6 @@ require './models/vote'
 
 include RottenTomatoes
 
-Rotten.api_key = 'z9rcfwsnkafcdrwpxhqsaqqy'
 
 begin
   require 'dotenv'
@@ -20,27 +19,36 @@ begin
 rescue LoadError
 end
 
+Rotten.api_key = ENV['ROTTEN_API_KEY']
+
 enable :sessions
 
-set :database, ENV['DATABASE_URL'] || "postgres://localhost/ninjadb"
+LOCAL_DATABASE_LOCATION = "postgres://localhost/ninjadb"
+set :database, ENV['DATABASE_URL'] || LOCAL_DATABASE_LOCATION
 
-def current_user
-  @current_user ||= logged_in? && User.find(session[:user_id])
-end
+helpers do
+  def current_user
+    @current_user ||= User.find(session[:user_id])
+  end
 
-def logged_in?
-  session[:user_id]
-end
+  def logged_in?
+    session[:user_id] != nil
+  end
 
-def enforce_login
-  redirect to '/' if !logged_in?
-end
+  def enforce_login
+    redirect to '/' if !logged_in?
+  end
 
-def check_existing_user(username)
-  if user = User.find_by_username(username)
-    return user
-  else
-    return false
+  def create_user(params)
+    User.create( {username: params[:username], email: params[:email], password: params[:password]} )
+  end
+
+  def existing_user?(username)
+    User.find_by_username(username) ? true : false
+  end
+
+  def set_active_user(user_id)
+    session[:user_id] = user_id 
   end
 
 end
@@ -52,8 +60,8 @@ end
 
 post '/signin' do
   @user = User.authenticate(params[:username], params[:password])
-  if !@user.nil?
-    session[:user_id] = @user.id
+  if @user != nil
+    set_active_user(@user.id)
     redirect '/create_survey'
   else
     @error = "Wrong username or password"
@@ -66,38 +74,38 @@ get '/register' do
 end
 
 post '/register' do
-  if !check_existing_user(params[:username])
-    @user = User.create( {username: params[:username], email: params[:email], password: params[:password]} )
-    session[:user_id] = @user.id
-  	redirect '/create_survey'
-  else
+  if existing_user?(params[:username])
     @error = "That username already exists"
     erb :index
+  else
+    @user = create_user(params)
+    set_active_user(@user.id)
+    redirect '/create_survey'
   end
 end
 
 get '/create_survey' do
-	@my_movie_list = []
-	
   enforce_login
+  @my_movie_list = []
+  
   @user = current_user
   erb :create_survey
 end
 
 post '/create_survey' do
   @user = current_user
-	my_title = params[:movie_title]
-	@my_movie_list = []
-	@my_movie = RottenMovie.find(:title => my_title, :limit => 1)
+  my_title = params[:movie_title]
+  @my_movie_list = []
+  @my_movie = RottenMovie.find(:title => my_title, :limit => 1)
 
-	@my_movie_list << Movie.create(:title => @my_movie.title,
-							 									 :synopsis => @my_movie.synopsis, 
-							 									 :runtime => @my_movie.runtime, 
-							 									 :critics_score => @my_movie.ratings.critics_score, 
-							 									 :audience_score => @my_movie.ratings.audience_score, 
-							 									 :pic => @my_movie.posters.original
-	)
-	erb :create_survey
+  @my_movie_list << Movie.create(:title => @my_movie.title,
+    :synopsis => @my_movie.synopsis, 
+    :runtime => @my_movie.runtime, 
+    :critics_score => @my_movie.ratings.critics_score, 
+    :audience_score => @my_movie.ratings.audience_score, 
+    :pic => @my_movie.posters.original
+    )
+  erb :create_survey
 end
 
 post '/logout' do
