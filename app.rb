@@ -12,6 +12,7 @@ require './models/vote'
 
 include RottenTomatoes
 
+# store key locally in env, don't publish to github
 Rotten.api_key = 'z9rcfwsnkafcdrwpxhqsaqqy'
 
 begin
@@ -22,10 +23,12 @@ end
 
 enable :sessions
 
-set :database, ENV['DATABASE_URL'] || "postgres://localhost/ninjadb"
+LOCAL_DATABASE_LOCATION = "postgres://localhost/ninjadb"
+
+set :database, ENV['DATABASE_URL'] || LOCAL_DATABASE_LOCATION
 
 def current_user
-  @current_user ||= logged_in? && User.find(session[:user_id])
+  @current_user ||= logged_in? && User.find(logged_in?)
 end
 
 def logged_in?
@@ -36,15 +39,6 @@ def enforce_login
   redirect to '/' if !logged_in?
 end
 
-def check_existing_user(username)
-  if user = User.find_by_username(username)
-    return user
-  else
-    return false
-  end
-
-end
-
 get '/' do
   @user = current_user if logged_in?
   erb :index
@@ -52,7 +46,7 @@ end
 
 post '/signin' do
   @user = User.authenticate(params[:username], params[:password])
-  if !@user.nil?
+  if @user
     session[:user_id] = @user.id
     redirect '/create_survey'
   else
@@ -66,14 +60,9 @@ get '/register' do
 end
 
 post '/register' do
-  if !check_existing_user(params[:username])
     @user = User.create( {username: params[:username], email: params[:email], password: params[:password]} )
     session[:user_id] = @user.id
   	redirect '/create_survey'
-  else
-    @error = "That username already exists"
-    erb :index
-  end
 end
 
 get '/create_survey' do
@@ -88,7 +77,8 @@ post '/create_survey' do
   @user = current_user
 	my_title = params[:movie_title]
 	@my_movie_list = []
-	@my_movie = RottenMovie.find(:title => my_title, :limit => 1)
+  # how will you handle multiple movies with same title, e.g. lotr?
+	@my_movie = RottenMovie.find(:title => my_title, :limit => 1) 
 
 	@my_movie_list << Movie.create(:title => @my_movie.title,
 							 									 :synopsis => @my_movie.synopsis, 
@@ -96,7 +86,7 @@ post '/create_survey' do
 							 									 :critics_score => @my_movie.ratings.critics_score, 
 							 									 :audience_score => @my_movie.ratings.audience_score, 
 							 									 :pic => @my_movie.posters.original
-	)
+                    )
 	erb :create_survey
 end
 

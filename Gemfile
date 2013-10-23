@@ -8,11 +8,7 @@ gem 'pg'
 gem 'rottentomatoes'
 
 
-group :production do
-
-end
-
-group :development do
+group :development, :test do
   gem 'shotgun'
   gem 'capybara'
   gem 'rspec'

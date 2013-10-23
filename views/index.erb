@@ -2,8 +2,8 @@
 
 <% if !logged_in? %>
 
-<h2 class="sign-in-header">Sign in</h2>
-<p>Welcome to Movie Ninja</p>
+  <h2 class="sign-in-header">Sign in</h2>
+  <p>Welcome to Movie Ninja</p>
 	<form name="form-sign-in" action='/signin' method="POST">
 		<input type="text" name ="username" placeholder="Username" />
 		<input type="password" name="password" placeholder="Password" />
@@ -14,11 +14,12 @@
 
 <% else %>
 
-<p>Logged in as: <%= @user.username %></p>
-<a href="/create_survey">Create a New Survey</a>
-<br />
-<form id="form-logout" action="/logout" method="post">
-  <input type="submit" value="logout" />
-</form>
-<br />
+  <p>Logged in as: <%= @user.username %></p>
+  <a href="/create_survey">Create a New Survey</a>
+  <br />
+  <form id="form-logout" action="/logout" method="post">
+    <input type="submit" value="logout" />
+  </form>
+  <br />
+  
 <% end %>
