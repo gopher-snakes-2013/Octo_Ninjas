@@ -27,7 +27,7 @@ end
 
 def login(user)
   visit '/'
-  fill_in :username, with: user[:name]
-  fill_in :password, with: user[:password]
+  fill_in "username", with: user[:name]
+  fill_in "password", with: user[:password]
   click_on "submit"
 end
