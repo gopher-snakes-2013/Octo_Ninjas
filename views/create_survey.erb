@@ -11,8 +11,8 @@
 	<hr>
 
 	<% if @movie_list %>
-		<% @movie_list.each do |title| %>
-		<%= title %> <br />
+		<% @movie_list.each do |movie| %>
+		<%= movie.title %> <br />
 		<% end %>
 	<% end %>
 
