@@ -77,7 +77,7 @@ post '/add_movie' do
 							 								       m.pic = @movie_data.posters.original
                                   end
 
-    session[:movie_list] << @current_movie.id if !session[:movie_list].include?(@current_movie.id)
+    session[:movie_list] << @current_movie.id unless session[:movie_list].include?(@current_movie.id)
   end
   @movie_list = session[:movie_list].map { |movie_id| Movie.find(movie_id) }
 
