@@ -1,0 +1,14 @@
+<p>Logged in as: <%= current_user.username %></p>
+
+<h3>Great! Here's your survey:</h3>
+
+	<% if @movie_list %>
+		<% @movie_list.each do |title| %>
+		<%= title %> <br />
+		<% end %>
+	<% end %>
+<br />
+<form id="form-logout" action="/logout" method="post">
+  <input type="submit" value="logout" />
+</form>
+<a href="../">Go Home</a>

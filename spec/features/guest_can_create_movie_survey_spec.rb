@@ -22,5 +22,19 @@ feature "registered user can add movies to a movie survey" do
       click_on "add movie"
       expect(page).to have_content("Upstream Color")
     end
+
+    scenario "registered user can complete a survey" do
+      register(new_user)
+      fill_in "movie_title", with: "gravity"
+      click_on "add movie"
+      expect(page).to have_content("Gravity")
+      fill_in "movie_title", with: "hobbit unexpected journey"
+      click_on "add movie"
+      expect(page).to have_content("The Hobbit: An Unexpected Journey")
+      click_on "finish survey"
+      expect(page).to have_content("Great! Here's your survey:")
+      expect(page).to have_content("Gravity")
+      expect(page).to have_content("The Hobbit: An Unexpected Journey")
+    end
   end
 end

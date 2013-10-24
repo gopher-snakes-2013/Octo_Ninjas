@@ -3,7 +3,7 @@
 <h2>Select movies for your survey</h2>
 <p>Enter movies to be included in your survey.</p>
 
-	<form name="form-add-movie" action='/add_movie' method="POST">
+	<form name="form-add-movie" action="/add_movie" method="POST">
 		Movie Title: <input type="text" name ="movie_title">
 		<input type="submit" value ="add movie">
 	</form>
@@ -17,7 +17,15 @@
 	<% end %>
 
 <br />
+<% if @movie_list %>
+<form id="button-finish-survey" action="/finish_survey" method="post">
+	<input type="submit" value="finish survey" />
+</form>
+<br />
+<% end %>
+<br />
+
 <form id="form-logout" action="/logout" method="post">
-  <input type="submit" value="logout" />
+	<input type="submit" value="logout" />
 </form>
 <a href="../">Go Home</a>

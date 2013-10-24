@@ -80,6 +80,15 @@ post '/add_movie' do
 	erb :create_survey
 end
 
+post '/finish_survey' do
+  p "Finished Survey!!!!!!!!!!!!!!!!!!!!!!!!"
+  enforce_login
+  @movie_list = session[:movie_list]
+  p @movie_list
+
+  erb :finish_survey
+end
+
 post '/logout' do
   logout
   redirect '/'
