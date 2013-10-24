@@ -74,7 +74,7 @@ post '/add_movie' do
 							 								       m.critics_score = @movie_data.ratings.critics_score
 							 								       m.audience_score = @movie_data.ratings.audience_score
 							 								       m.pic = @movie_data.posters.original
-                                   end
+                                  end
 
   session[:movie_list] << @current_movie.id if !session[:movie_list].include?(@current_movie.id)
   @movie_list = session[:movie_list].map { |movie_id| Movie.find(movie_id) }
@@ -87,7 +87,7 @@ post '/finish_survey' do
   @movie_list = session[:movie_list].map { |movie_id| Movie.find(movie_id) }
   survey_url = SecureRandom.urlsafe_base64
   @survey = Survey.create(user_id: session[:user_id],
-                survey_info: "test",
+                survey_info: params[:survey_info],
                 survey_url: survey_url)
   @survey.movies = @movie_list
   @survey.save
