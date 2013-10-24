@@ -7,11 +7,6 @@ gem 'bcrypt-ruby'
 gem 'pg'
 gem 'rottentomatoes'
 
-
-group :production do
-
-end
-
 group :development do
   gem 'shotgun'
   gem 'capybara'

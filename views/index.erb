@@ -1,24 +1,5 @@
-<%= @error %>
-
-<% if !logged_in? %>
-
-<h2 class="sign-in-header">Sign in</h2>
-<p>Welcome to Movie Ninja</p>
-<form name="form-sign-in" action='/signin' method="POST">
-	<input type="text" name ="username" placeholder="Username" />
-	<input type="password" name="password" placeholder="Password" />
-	<input type="submit" value ="submit">
-</form>
-<br />
-<a href="/register">Register New User</a>
-
+<% if logged_in? %>
+	<%= erb :_logged_in_user_nav %>
 <% else %>
-
-<p>Logged in as: <%= current_user.username %></p>
-<a href="/create_survey">Create a New Survey</a>
-<br />
-<form id="form-logout" action="/logout" method="post">
-  <input type="submit" value="logout" />
-</form>
-<br />
+	<%= erb :_logged_out_user_nav %>
 <% end %>
