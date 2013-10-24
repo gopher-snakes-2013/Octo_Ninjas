@@ -15,6 +15,5 @@ feature "guest can register new user" do
       register(new_user)
       expect(page).to have_content("Select movies for your survey")
     end
-
   end
 end

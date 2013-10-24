@@ -7,7 +7,7 @@ feature "guest can add movies to a movie survey" do
     end
 
     scenario "guest can add a movie to a movie survey" do
-      login
+      login(new_user)
       expect(page).to have_content("Logged in as: Taylor")      
     end
 
