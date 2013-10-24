@@ -6,13 +6,6 @@ feature "user can log in and out" do
       User.create({ username: "Taylor", email: "go@away.com", password: "password"} )
     end
 
-    def login
-      visit '/'
-      fill_in :username, with: "Taylor"
-      fill_in :password, with: "password"
-      click_on "submit"
-    end
-
     scenario "user sees confirmation of login" do
       login
       expect(page).to have_content("Logged in as: Taylor")
