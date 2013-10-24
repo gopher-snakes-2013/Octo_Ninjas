@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "guest can register new user" do
   context "when valid info is given" do
     let(:new_user) do
-      { name: "Taylor", email: "go@away.com", password: "password" }
+      { name: "Taylor", email: "go@example.com", password: "password" }
     end
 
     scenario "they see confirmation of login" do

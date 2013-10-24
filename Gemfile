@@ -7,14 +7,10 @@ gem 'bcrypt-ruby'
 gem 'pg'
 gem 'rottentomatoes'
 
-
-group :production do
-
-end
-
 group :development do
   gem 'shotgun'
   gem 'capybara'
   gem 'rspec'
   gem 'shoulda-matchers'
+  gem 'dotenv'
 end

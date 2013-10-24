@@ -9,10 +9,7 @@ require './models/survey'
 require './models/survey_movie'
 require './models/user'
 require './models/vote'
-
-include RottenTomatoes
-
-Rotten.api_key = 'z9rcfwsnkafcdrwpxhqsaqqy'
+require './helpers/session_helper.rb'
 
 begin
   require 'dotenv'
@@ -20,44 +17,29 @@ begin
 rescue LoadError
 end
 
+include RottenTomatoes
+
+Rotten.api_key = ENV['ROTTEN_API_KEY']
+
+helpers do
+  include SessionHelper
+end
+
 enable :sessions
 
-set :database, ENV['DATABASE_URL'] || "postgres://localhost/ninjadb"
-
-def current_user
-  @current_user ||= logged_in? && User.find(session[:user_id])
-end
-
-def logged_in?
-  session[:user_id]
-end
-
-def enforce_login
-  redirect to '/' if !logged_in?
-end
-
-def check_existing_user(username)
-  if user = User.find_by_username(username)
-    return user
-  else
-    return false
-  end
-
-end
+set :database, ENV['DATABASE_URL']
 
 get '/' do
-  @user = current_user if logged_in?
   erb :index
 end
 
 post '/signin' do
   @user = User.authenticate(params[:username], params[:password])
-  if !@user.nil?
-    session[:user_id] = @user.id
+  if @user
+    make_active(@user)
     redirect '/create_survey'
   else
-    @error = "Wrong username or password"
-    erb :index
+    redirect '/'
   end
 end
 
@@ -66,36 +48,33 @@ get '/register' do
 end
 
 post '/register' do
-  if !check_existing_user(params[:username])
-    @user = User.create( {username: params[:username], email: params[:email], password: params[:password]} )
-    session[:user_id] = @user.id
+  @user = User.create( {username: params[:username], email: params[:email], password: params[:password]} )
+  if @user
+    make_active(@user)
   	redirect '/create_survey'
   else
-    @error = "That username already exists"
-    erb :index
+    redirect '/register'
   end
 end
 
 get '/create_survey' do
+	@my_movie_list = []
   enforce_login
-	session[:movie_list] = []
-  @user = current_user
   erb :create_survey
 end
 
-post '/add_movie' do
-  @user = current_user
-	search_title = params[:movie_title]
-	@movie_to_add = RottenMovie.find(:title => search_title, :limit => 1)
-  
+post '/create_survey' do
+	my_title = params[:movie_title]
+	@my_movie_list = []
+	@movie_data = RottenMovie.find(:title => my_title, :limit => 1)
 
-	@my_movie = Movie.create(:title => @movie_to_add.title,
-							 			       :synopsis => @movie_to_add.synopsis, 
-							 			       :runtime => @movie_to_add.runtime, 
-							 			       :critics_score => @movie_to_add.ratings.critics_score, 
-							 			       :audience_score => @movie_to_add.ratings.audience_score, 
-							 			       :pic => @movie_to_add.posters.original
-	)
+	@my_movie_list << Movie.create(:title => @movie_data.title,
+							 									 :synopsis => @movie_data.synopsis, 
+							 									 :runtime => @movie_data.runtime, 
+							 									 :critics_score => @movie_data.ratings.critics_score, 
+							 									 :audience_score => @movie_data.ratings.audience_score, 
+							 									 :pic => @movie_data.posters.original
+	                               )
 
   session[:movie_list] << @my_movie.title
   @movie_list = session[:movie_list]
@@ -104,7 +83,7 @@ post '/add_movie' do
 end
 
 post '/logout' do
-  session.clear
+  logout
   redirect '/'
 end
 
