@@ -8,10 +8,10 @@ class Add6NewFieldsToMoviesTable < ActiveRecord::Migration
   end
 
   def down
-		remove_column :movies, :synopsis, :text
-  	remove_column :movies, :runtime, :string
-  	remove_column :movies, :critics_score, :string
-  	remove_column :movies, :audience_score, :string
-  	remove_column :movies, :pic, :string
+		remove_column :movies, :synopsis
+  	remove_column :movies, :runtime
+  	remove_column :movies, :critics_score
+  	remove_column :movies, :audience_score
+  	remove_column :movies, :pic
   end
 end

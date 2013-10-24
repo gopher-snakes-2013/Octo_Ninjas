@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "registered user can add movies to a movie survey" do
   context "when logged in" do
     let(:new_user) do
-      { name: "Taylor", email: "go@away.com", password: "password" }
+      { name: "Taylor", email: "go@example.com", password: "password" }
     end
 
     scenario "registered user can add a movie to a movie survey" do
