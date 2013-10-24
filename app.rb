@@ -77,26 +77,29 @@ post '/register' do
 end
 
 get '/create_survey' do
-	@my_movie_list = []
-	
   enforce_login
+	session[:movie_list] = []
   @user = current_user
   erb :create_survey
 end
 
-post '/create_survey' do
+post '/add_movie' do
   @user = current_user
-	my_title = params[:movie_title]
-	@my_movie_list = []
-	@my_movie = RottenMovie.find(:title => my_title, :limit => 1)
+	search_title = params[:movie_title]
+	@movie_to_add = RottenMovie.find(:title => search_title, :limit => 1)
+  
 
-	@my_movie_list << Movie.create(:title => @my_movie.title,
-							 									 :synopsis => @my_movie.synopsis, 
-							 									 :runtime => @my_movie.runtime, 
-							 									 :critics_score => @my_movie.ratings.critics_score, 
-							 									 :audience_score => @my_movie.ratings.audience_score, 
-							 									 :pic => @my_movie.posters.original
+	@my_movie = Movie.create(:title => @movie_to_add.title,
+							 			       :synopsis => @movie_to_add.synopsis, 
+							 			       :runtime => @movie_to_add.runtime, 
+							 			       :critics_score => @movie_to_add.ratings.critics_score, 
+							 			       :audience_score => @movie_to_add.ratings.audience_score, 
+							 			       :pic => @movie_to_add.posters.original
 	)
+
+  session[:movie_list] << @my_movie.title
+  @movie_list = session[:movie_list]
+
 	erb :create_survey
 end
 
