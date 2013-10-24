@@ -85,8 +85,23 @@ end
 post '/finish_survey' do
   enforce_login
   @movie_list = session[:movie_list].map { |movie_id| Movie.find(movie_id) }
-
+  survey_url = SecureRandom.urlsafe_base64
+  @survey = Survey.create(user_id: session[:user_id],
+                survey_info: "test",
+                survey_url: survey_url)
+  @survey.movies = @movie_list
+  @survey.save
+  
   erb :finish_survey
+end
+
+get '/surveys/:survey_url' do
+  @survey = Survey.find_by survey_url: params[:survey_url]
+  if @survey
+    erb :survey
+  else
+    redirect '/'  
+  end
 end
 
 post '/logout' do

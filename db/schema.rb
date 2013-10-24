@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(version: 20131024045436) do
   end
 
   create_table "survey_movies", force: true do |t|
-    t.integer  "surveys_id"
-    t.integer  "movies_id"
+    t.integer  "survey_id"
+    t.integer  "movie_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -1,0 +1,5 @@
+<h3>Survey created by: <%= @survey.user.username %></h3>
+
+<% @survey.movies.each do |movie| %>
+	<%= movie.title %><br />
+<% end %>
