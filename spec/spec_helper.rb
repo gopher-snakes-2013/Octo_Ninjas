@@ -15,3 +15,19 @@ RSpec.configure do |config|
     Vote.destroy_all
   end
 end
+
+def register(user)
+  visit '/'
+  click_on "Register New User"
+  fill_in "username", with: user[:name]
+  fill_in "email", with: user[:email]
+  fill_in "password", with: user[:password]
+  click_on "Register"
+end
+
+def login(user)
+  visit '/'
+  fill_in "username", with: user[:name]
+  fill_in "password", with: user[:password]
+  click_on "submit"
+end

@@ -1,0 +1,16 @@
+<p>Logged in as: <%= current_user.username %></p>
+<h3>Great! Here's your survey:</h3>
+<p>Send this link to your friends: <a href="/surveys/<%= @survey.survey_url %>">My Awesome Survey</a></p>
+<h4>Info:</h4>
+<p><%= @survey.survey_info %></p>
+	<% if @movie_list %>
+		<h4>Your Movies</h4>
+		<% @movie_list.each do |movie| %>
+			<%= movie.title %> <br />
+		<% end %>
+	<% end %>
+<br />
+<form id="form-logout" action="/logout" method="post">
+  <input type="submit" value="logout" />
+</form>
+<a href="../">Go Home</a>

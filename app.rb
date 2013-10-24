@@ -58,33 +58,55 @@ post '/register' do
 end
 
 get '/create_survey' do
-	@my_movie_list = []
   enforce_login
+  session[:movie_list] = []
   erb :create_survey
 end
 
-post '/create_survey' do
-	my_title = params[:movie_title]
-	@my_movie_list = []
-	@movie_data = RottenMovie.find(:title => my_title, :limit => 1)
+post '/add_movie' do
+	search_title = params[:movie_title]
+	@movie_data = RottenMovie.find(:title => search_title, :limit => 1)
 
-	@my_movie_list << Movie.create(:title => @movie_data.title,
-							 									 :synopsis => @movie_data.synopsis, 
-							 									 :runtime => @movie_data.runtime, 
-							 									 :critics_score => @movie_data.ratings.critics_score, 
-							 									 :audience_score => @movie_data.ratings.audience_score, 
-							 									 :pic => @movie_data.posters.original
-	)
+	unless @movie_data.empty?
+    @current_movie = Movie.find_or_create_by(rotten_id: @movie_data.id) do |m|
+                                     m.title = @movie_data.title
+							 								       m.synopsis = @movie_data.synopsis
+							 								       m.runtime = @movie_data.runtime
+							 								       m.critics_score = @movie_data.ratings.critics_score
+							 								       m.audience_score = @movie_data.ratings.audience_score
+							 								       m.pic = @movie_data.posters.original
+                                  end
+
+    session[:movie_list] << @current_movie.id unless session[:movie_list].include?(@current_movie.id)
+  end
+  @movie_list = session[:movie_list].map { |movie_id| Movie.find(movie_id) }
+
 	erb :create_survey
+end
+
+post '/finish_survey' do
+  enforce_login
+  @movie_list = session[:movie_list].map { |movie_id| Movie.find(movie_id) }
+  survey_url = SecureRandom.urlsafe_base64
+  @survey = Survey.create(user_id: session[:user_id],
+                survey_info: params[:survey_info],
+                survey_url: survey_url)
+  @survey.movies = @movie_list
+  @survey.save
+  
+  erb :finish_survey
+end
+
+get '/surveys/:survey_url' do
+  @survey = Survey.find_by survey_url: params[:survey_url]
+  if @survey
+    erb :survey
+  else
+    redirect '/'  
+  end
 end
 
 post '/logout' do
   logout
   redirect '/'
 end
-
-
-
-
-
-

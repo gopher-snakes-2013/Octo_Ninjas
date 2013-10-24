@@ -1,8 +1,8 @@
 class CreateSurveyMoviesTable < ActiveRecord::Migration
   def up
   	create_table :survey_movies do |t|
-  		t.belongs_to :surveys
-  		t.belongs_to :movies
+  		t.belongs_to :survey
+  		t.belongs_to :movie
 
   		t.timestamps
     end
