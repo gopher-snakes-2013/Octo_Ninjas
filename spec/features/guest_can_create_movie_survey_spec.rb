@@ -31,10 +31,12 @@ feature "registered user can add movies to a movie survey" do
       fill_in "movie_title", with: "hobbit unexpected journey"
       click_on "add movie"
       expect(page).to have_content("The Hobbit: An Unexpected Journey")
+      fill_in "survey_info", with: "totally awesome survey"
       click_on "finish survey"
       expect(page).to have_content("Great! Here's your survey:")
       expect(page).to have_content("Gravity")
       expect(page).to have_content("The Hobbit: An Unexpected Journey")
+      expect(page).to have_content("totally awesome survey")
     end
   end
 end
