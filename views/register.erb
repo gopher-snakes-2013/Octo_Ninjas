@@ -1,5 +1,5 @@
 <% if logged_in? %>
-<p class="error">You are already logged in as <%= User.find(session[:user_id]).username %></p>
+<p class="error">You are already logged in as <%= current_user.username %></p>
 <form name="logout-button"id="form-logout" action="/logout" method="post">
   <input type="submit" value="logout?" />
 </form>

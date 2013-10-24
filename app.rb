@@ -9,10 +9,7 @@ require './models/survey'
 require './models/survey_movie'
 require './models/user'
 require './models/vote'
-
-include RottenTomatoes
-
-Rotten.api_key = 'z9rcfwsnkafcdrwpxhqsaqqy'
+require './helpers/session_helper.rb'
 
 begin
   require 'dotenv'
@@ -20,9 +17,17 @@ begin
 rescue LoadError
 end
 
+include RottenTomatoes
+
+Rotten.api_key = ENV['ROTTEN_API_KEY']
+
+helpers do
+  include SessionHelper
+end
+
 enable :sessions
 
-set :database, ENV['DATABASE_URL'] || "postgres://localhost/ninjadb"
+set :database, ENV['DATABASE_URL']
 
 def current_user
   @current_user ||= logged_in? && User.find(session[:user_id])
@@ -66,26 +71,22 @@ get '/register' do
 end
 
 post '/register' do
-  if !check_existing_user(params[:username])
-    @user = User.create( {username: params[:username], email: params[:email], password: params[:password]} )
+  @user = User.create( {username: params[:username], email: params[:email], password: params[:password]} )
+  if @user
     session[:user_id] = @user.id
   	redirect '/create_survey'
   else
-    @error = "That username already exists"
-    erb :index
+    redirect '/register'
   end
 end
 
 get '/create_survey' do
 	@my_movie_list = []
-	
   enforce_login
-  @user = current_user
   erb :create_survey
 end
 
 post '/create_survey' do
-  @user = current_user
 	my_title = params[:movie_title]
 	@my_movie_list = []
 	@my_movie = RottenMovie.find(:title => my_title, :limit => 1)
@@ -101,7 +102,7 @@ post '/create_survey' do
 end
 
 post '/logout' do
-  session.clear
+  logout
   redirect '/'
 end
 

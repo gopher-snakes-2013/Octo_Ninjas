@@ -17,4 +17,5 @@ group :development do
   gem 'capybara'
   gem 'rspec'
   gem 'shoulda-matchers'
+  gem 'dotenv'
 end
