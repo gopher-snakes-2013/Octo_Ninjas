@@ -67,7 +67,8 @@ post '/add_movie' do
 	search_title = params[:movie_title]
 	@movie_data = RottenMovie.find(:title => search_title, :limit => 1)
 
-	@current_movie = Movie.find_or_create_by(rotten_id: @movie_data.id) do |m|
+	unless @movie_data.empty?
+    @current_movie = Movie.find_or_create_by(rotten_id: @movie_data.id) do |m|
                                      m.title = @movie_data.title
 							 								       m.synopsis = @movie_data.synopsis
 							 								       m.runtime = @movie_data.runtime
@@ -76,7 +77,8 @@ post '/add_movie' do
 							 								       m.pic = @movie_data.posters.original
                                   end
 
-  session[:movie_list] << @current_movie.id if !session[:movie_list].include?(@current_movie.id)
+    session[:movie_list] << @current_movie.id if !session[:movie_list].include?(@current_movie.id)
+  end
   @movie_list = session[:movie_list].map { |movie_id| Movie.find(movie_id) }
 
 	erb :create_survey
