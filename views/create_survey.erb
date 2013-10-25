@@ -4,25 +4,21 @@
 <p>Enter movies to be included in your survey.</p>
 
 	<form name="form-add-movie" action="/add_movie" method="POST">
-		Movie Title: <input type="text" name ="movie_title">
-		<input type="submit" value ="add movie">
+		Movie Title: <input id="movie-title" type="text" name ="movie_title">
+		<input id="add-movie" type="submit" value ="add movie">
 	</form>
 
 	<hr>
 
-	<% current_movie_list.each do |movie| %>
-		<%= movie.title %> <br />
-	<% end %>
+	<div id="movie-list"></div>
 
 <br />
-<% if current_movie_list.length >= 1 %>
 <form id="button-finish-survey" action="/finish_survey" method="post">
 	<p>Enter info about your survey that will appear on the survey page:</p>
 	<textarea form="button-finish-survey" name="survey_info" rows="4" cols="50" required></textarea>
 	<input type="submit" value="finish survey" />
 </form>
 <br />
-<% end %>
 <br />
 
 <form id="form-logout" action="/logout" method="post">
