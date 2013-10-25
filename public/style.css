@@ -12,17 +12,16 @@
 
 .movie_pic {
 	float: left;
-	width: 20%;
 }
 
 .movie_info {
-	padding-left: 20px;
 	float: left;
 	width: 70%;
+	background-color: red;
 }
 
 .movie_title {
-	margin: 10px 0px 20px 10px;
+	margin: 30px;
 	font-family: "Helvetica", sans-serif;
 	font-size: 1.4em;
 }
