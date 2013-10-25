@@ -10,14 +10,12 @@
 
 	<hr>
 
-	<% if @movie_list %>
-		<% @movie_list.each do |movie| %>
-			<%= movie.title %> <br />
-		<% end %>
+	<% current_movie_list.each do |movie| %>
+		<%= movie.title %> <br />
 	<% end %>
 
 <br />
-<% if @movie_list %>
+<% if current_movie_list.length >= 1 %>
 <form id="button-finish-survey" action="/finish_survey" method="post">
 	<p>Enter info about your survey that will appear on the survey page:</p>
 	<textarea form="button-finish-survey" name="survey_info" rows="4" cols="50" required></textarea>
