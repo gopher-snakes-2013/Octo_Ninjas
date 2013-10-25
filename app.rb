@@ -64,6 +64,7 @@ get '/create_survey' do
 end
 
 post '/add_movie' do
+
 	search_title = params[:movie_title]
 	@movie_data = RottenMovie.find(:title => search_title, :limit => 1)
 
@@ -81,7 +82,7 @@ post '/add_movie' do
   end
   @movie_list = session[:movie_list].map { |movie_id| Movie.find(movie_id) }
 
-	erb :create_survey
+	erb :"partials/_movie_template", :layout => false
 end
 
 post '/finish_survey' do
