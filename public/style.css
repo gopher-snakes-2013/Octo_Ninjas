@@ -1,0 +1,28 @@
+#movie_list {
+	width: 100%;
+	display: block;
+	background-color: red;
+}
+
+.movie {
+	margin: 5px;
+	padding: 5px;
+	float: left;
+}
+
+.movie_pic {
+	float: left;
+	width: 20%;
+}
+
+.movie_info {
+	padding-left: 20px;
+	float: left;
+	width: 70%;
+}
+
+.movie_title {
+	margin: 10px 0px 20px 10px;
+	font-family: "Helvetica", sans-serif;
+	font-size: 1.4em;
+}

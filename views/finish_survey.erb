@@ -5,11 +5,20 @@
 <p><%= @survey.survey_info %></p>
 	<% if current_movie_list.length >= 1  %>
 		<h4>Your Movies</h4>
+		<div id="movie_list">
 		<% current_movie_list.each do |movie| %>
-			<%= movie.title %> <br />
+			<div class="movie">
+				<img class="movie_pic" src=<%= movie.pic %> width="214" height="317"><br />
+				<div class="movie_info">
+					<div class="movie_title"><%= movie.title %><br /></div>
+					<div class="movie_synopsis"><%= movie.synopsis %><br /></div>
+				</div>
+			</div>
+		</div>
 		<% end %>
 	<% end %>
 <br />
+<hr />
 <form id="form-logout" action="/logout" method="post">
   <input type="submit" value="logout" />
 </form>
