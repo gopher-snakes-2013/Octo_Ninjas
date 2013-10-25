@@ -5,9 +5,17 @@
 <p><%= @survey.survey_info %></p>
 	<% if @movie_list %>
 		<h4>Your Movies</h4>
+		<div id="movie_list">
 		<% @movie_list.each do |movie| %>
-			<%= movie.title %> <br />
+			<div class="movie"><img src=<%= movie.pic %> style="width:100px">
+				<span id="movie_text"> Title: <%= movie.title %>
+				Runtime: <%= movie.runtime %> min
+				Critic's Score: <%= movie.critics_score %>
+				Audience Score: <%= movie.audience_score %>
+				</span>
+				</div>
 		<% end %>
+	  </div>
 	<% end %>
 <br />
 <form id="form-logout" action="/logout" method="post">
