@@ -3,9 +3,9 @@
 <p>Send this link to your friends: <a href="/surveys/<%= @survey.survey_url %>">My Awesome Survey</a></p>
 <h4>Info:</h4>
 <p><%= @survey.survey_info %></p>
-	<% if @movie_list %>
+	<% if current_movie_list.length >= 1  %>
 		<h4>Your Movies</h4>
-		<% @movie_list.each do |movie| %>
+		<% current_movie_list.each do |movie| %>
 			<%= movie.title %> <br />
 		<% end %>
 	<% end %>

@@ -10,6 +10,7 @@ require './models/survey_movie'
 require './models/user'
 require './models/vote'
 require './helpers/session_helper.rb'
+require './helpers/movie_helper.rb'
 
 begin
   require 'dotenv'
@@ -23,6 +24,7 @@ Rotten.api_key = ENV['ROTTEN_API_KEY']
 
 helpers do
   include SessionHelper
+  include MovieHelper
 end
 
 enable :sessions
@@ -78,21 +80,20 @@ post '/add_movie' do
 							 								       m.pic = @movie_data.posters.original
                                   end
 
-    session[:movie_list] << @current_movie.id unless session[:movie_list].include?(@current_movie.id)
+    add_to_session(@current_movie.id)
   end
-  @movie_list = session[:movie_list].map { |movie_id| Movie.find(movie_id) }
-
+  @movie_list = current_movie_list
 	erb :"partials/_movie_template", :layout => false
 end
 
 post '/finish_survey' do
   enforce_login
-  @movie_list = session[:movie_list].map { |movie_id| Movie.find(movie_id) }
+  redirect to '/create_survey' if current_movie_list.empty?
   survey_url = SecureRandom.urlsafe_base64
   @survey = Survey.create(user_id: session[:user_id],
                 survey_info: params[:survey_info],
                 survey_url: survey_url)
-  @survey.movies = @movie_list
+  @survey.movies = current_movie_list
   @survey.save
   
   erb :finish_survey

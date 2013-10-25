@@ -13,14 +13,12 @@
 	<div id="movie-list"></div>
 
 <br />
-<% if @movie_list %>
 <form id="button-finish-survey" action="/finish_survey" method="post">
 	<p>Enter info about your survey that will appear on the survey page:</p>
 	<textarea form="button-finish-survey" name="survey_info" rows="4" cols="50" required></textarea>
 	<input type="submit" value="finish survey" />
 </form>
 <br />
-<% end %>
 <br />
 
 <form id="form-logout" action="/logout" method="post">
