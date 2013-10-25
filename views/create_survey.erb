@@ -4,17 +4,13 @@
 <p>Enter movies to be included in your survey.</p>
 
 	<form name="form-add-movie" action="/add_movie" method="POST">
-		Movie Title: <input type="text" name ="movie_title">
-		<input type="submit" value ="add movie">
+		Movie Title: <input id="movie-title" type="text" name ="movie_title">
+		<input id="add-movie" type="submit" value ="add movie">
 	</form>
 
 	<hr>
 
-	<% if @movie_list %>
-		<% @movie_list.each do |movie| %>
-			<%= movie.title %> <br />
-		<% end %>
-	<% end %>
+	<div id="movie-list"></div>
 
 <br />
 <% if @movie_list %>
