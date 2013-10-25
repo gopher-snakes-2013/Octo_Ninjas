@@ -1,4 +1,12 @@
 <% if @movie_list %>
-	<%= @movie_list.last.title %> <br />
+	<br />
+	<div class="movie">
+		<div class="movie_title"><h3><%= @movie_list.last.title %></h3></div>
+		<img class="movie_pic" src=<%= @movie_list.last.pic %> width="214" height="317" />
+		<div class="movie_info">
+			<%= @movie_list.last.synopsis %>
+		</div>
+	</div>
+	<br
 <% end %>
 
