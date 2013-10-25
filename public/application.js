@@ -11,6 +11,7 @@ $(document).ready(function(){
 			data: {movie_title: movie}
 
 		}).done(function(serverData){
+			console.log(serverData)
 			$('#movie-list').append(serverData)
 		})
 	})

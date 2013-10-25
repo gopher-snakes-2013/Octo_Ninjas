@@ -1,5 +1,3 @@
 	<% if @movie_list %>
-		<% @movie_list.each do |movie| %>
-			<%= movie.title %> <br />
-		<% end %>
+		<%= @movie_list.last.title %> <br />
 	<% end %>
