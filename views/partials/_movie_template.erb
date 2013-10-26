@@ -4,6 +4,7 @@
 		<div class="movie_title"><h3><%= @movie_list.last.title %></h3></div>
 		<img class="movie_pic" src=<%= @movie_list.last.pic %> width="214" height="317" />
 		<div class="movie_info">
+			Critcs Score: <%= @movie_list.last.critics_score %><br/>
 			<%= @movie_list.last.synopsis %>
 		</div>
 	</div>
