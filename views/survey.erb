@@ -3,8 +3,15 @@
 <p><%= @survey.survey_info %></p>
 <br />
 <h4>Movies to choose from:</h4>
-<% @survey.movies.each do |movie| %>
-	<%= movie.title %><br />
+<div id="movie_list">
+<% current_movie_list.each do |movie| %>
+	<div class="movie">
+		<div class="movie_info">
+			<div class="movie_title"><h3><%= movie.title %></h3></div>
+		</div>
+		<img class="movie_pic" src=<%= movie.pic %> width="214" height="317" />
+	</div>
+</div>
 <% end %>
 <br />
 <a href="../">Go Home</a>
